@@ -5,6 +5,7 @@ import (
 
 	"github.com/jcbl1/DSnAlgorithms_practice/meituan_train_inNout"
 	"github.com/jcbl1/DSnAlgorithms_practice/sololearn_new_drivers_license"
+	"github.com/jcbl1/DSnAlgorithms_practice/sololearn_its_a_sigh"
 )
 
 var ents []string
@@ -13,6 +14,7 @@ func main() {
 	ents = []string{
 		"美团笔试-火车入站出站",
 		"Sololearn-New Driver's License",
+		"Sololearn-It's a sigh",
 	}
 	welcomStr := ""
 	for i, v := range ents {
@@ -31,5 +33,7 @@ func main() {
 		meituan_train_inNout.Main()
 	case 2:
 		sololearn_new_drivers_license.Main()
+	case 3:
+		sololearn_its_a_sigh.Main()
 	}
 }
