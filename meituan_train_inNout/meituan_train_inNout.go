@@ -11,38 +11,24 @@ import (
 
 var randInt int
 
-type Node struct {
-	Val  int
-	Next *Node
-}
+type StationStack []int
 
-func (head *Node) insert(x int) {
-	if head.Val == 1e9+randInt {
-		head.Val = x
-		return
-	}
-	node := new(Node)
-	node.Val = head.Val
-	node.Next = head.Next
-	head.Val = x
-	head.Next = node
+func (s *StationStack) Push(x any) {
+	*s = append(*s, x.(int))
 }
-
-func (head *Node) pop() (x int) {
-	x = head.Val
-	if head.Next == nil {
-		head.Val = 1e9 + randInt
-	} else {
-		*head = *head.Next
-	}
-	return
+func (s *StationStack) Pop() any {
+	old := *s
+	n := len(old)
+	x := old[n-1]
+	*s = old[:n-1]
+	return x
 }
 
 func Main() {
 	randInt = rand.Intn(60000)
 
 	in, out := getInOut()
-	fmt.Println(checkInOut(in, out))
+	fmt.Println(checkInOutV2(in, out))
 }
 
 func getInOut() (in, out []int) {
@@ -62,25 +48,24 @@ func getInOut() (in, out []int) {
 	return
 }
 
-func checkInOut(in, out []int) bool {
+func checkInOutV2(in, out []int) bool {
 	if len(in) != len(out) {
 		return false
 	}
-	head := Node{Val: 1e9 + randInt}
+	sh := new(StationStack)
+	sh.Push(randInt + 1e9)
 	count := 0
-	for _, v := range in {
-		head.insert(v)
-		for j := count; j < len(out); j++ {
-			if out[j] == head.Val {
-				head.pop()
+	for i := range in {
+		sh.Push(in[i])
+		for j := count; j < len(in); j++ {
+			x := sh.Pop()
+			if out[j] == x {
 				count++
 			} else {
+				sh.Push(x)
 				break
 			}
 		}
 	}
-	if count == len(in) {
-		return true
-	}
-	return false
+	return count == len(in)
 }
